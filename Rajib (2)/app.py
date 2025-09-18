@@ -1,15 +1,16 @@
 from flask import Flask, render_template, request, jsonify
 from pywebpush import webpush, WebPushException
 import json
+import os
 
 app = Flask(__name__)
 
-# VAPID keys (replace with your own)
+# Replace with your generated VAPID keys
 VAPID_PUBLIC_KEY = "YOUR_PUBLIC_KEY"
 VAPID_PRIVATE_KEY = "YOUR_PRIVATE_KEY"
 VAPID_CLAIMS = {"sub": "mailto:you@example.com"}
 
-# Store subscriptions
+# Store subscriptions in memory (for real projects, use a database)
 subscriptions = []
 
 @app.route("/")
@@ -42,5 +43,8 @@ def send_notification():
             print("Error sending notification:", repr(ex))
     return jsonify({"status": "sent"})
 
+# Render deployment fix: get port from environment
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+
