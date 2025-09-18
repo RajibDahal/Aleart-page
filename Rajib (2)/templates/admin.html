@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Broadcast</title>
+</head>
+<body>
+  <h2>Admin Notification Panel</h2>
+  <input type="text" id="title" placeholder="Notification Title"><br><br>
+  <textarea id="body" placeholder="Type your message here..." rows="4" cols="50"></textarea><br><br>
+  <button onclick="sendNotification()">Send Notification</button>
+
+  <script>
+    async function sendNotification() {
+      const title = document.getElementById("title").value;
+      const body = document.getElementById("body").value;
+
+      const response = await fetch('/send_notification', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({title, body})
+      });
+
+      const result = await response.json();
+      if (result.status === "sent") {
+        alert("✅ Notification sent to all subscribers!");
+      }
+    }
+  </script>
+</body>
+</html>

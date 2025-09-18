@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Subscribe for Notifications</title>
+</head>
+<body>
+  <h2>Subscribe to Notifications</h2>
+  <button onclick="subscribe()">Subscribe</button>
+
+  <script>
+    async function subscribe() {
+      const reg = await navigator.serviceWorker.register('/static/sw.js');
+      const subscription = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: "{{ vapid_public_key }}"
+      });
+
+      await fetch('/subscribe', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(subscription)
+      });
+
+      alert("✅ Subscribed!");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+flask
+pywebpush
+gunicorn
+requests
